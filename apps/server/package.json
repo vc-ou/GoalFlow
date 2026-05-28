@@ -10,7 +10,7 @@
     "lint": "tsc --noEmit -p tsconfig.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "seed": "tsx src/scripts/seed.ts",
-    "test": "vitest run"
+    "test": "pnpm --filter @goalflow/shared build && vitest run"
   },
   "dependencies": {
     "@goalflow/shared": "workspace:*",
