@@ -1,0 +1,14 @@
+{
+  "name": "GoalFlow",
+  "appid": "__UNI__GOALFLOW",
+  "description": "GoalFlow V1",
+  "versionName": "0.1.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "mp-weixin": {
+    "appid": "wxcc801d3d81d4ac7c",
+    "setting": {
+      "urlCheck": false
+    }
+  }
+}

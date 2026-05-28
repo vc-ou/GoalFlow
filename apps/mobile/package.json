@@ -1,0 +1,37 @@
+{
+  "name": "@goalflow/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:h5": "vite",
+    "dev:mp-weixin": "uni build -p mp-weixin -w --outDir dist/mp-weixin",
+    "build:h5": "vite build",
+    "build:mp-weixin": "uni build -p mp-weixin --outDir dist/mp-weixin",
+    "lint": "vue-tsc --noEmit -p tsconfig.json",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app": "3.0.0-alpha-5010120260525001",
+    "@dcloudio/uni-components": "3.0.0-alpha-5010120260525001",
+    "@dcloudio/uni-h5": "3.0.0-alpha-5010120260525001",
+    "@dcloudio/uni-mp-weixin": "3.0.0-alpha-5010120260525001",
+    "@dcloudio/uni-mp-vue": "3.0.0-alpha-5010120260525001",
+    "@dcloudio/vite-plugin-uni": "3.0.0-alpha-5010120260525001",
+    "@goalflow/shared": "workspace:*",
+    "pinia": "^2.3.0",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "^3.4.31",
+    "@types/node": "^22.10.2",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^26.1.0",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.14",
+    "vitest": "^3.2.4",
+    "vue-tsc": "^2.2.0"
+  }
+}

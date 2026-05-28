@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1440" height="1024" viewBox="0 0 1440 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="deskBg" x1="20" y1="40" x2="1260" y2="1080" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F8F3E8"/>
+      <stop offset="0.5" stop-color="#EEF7EE"/>
+      <stop offset="1" stop-color="#E8EEF6"/>
+    </linearGradient>
+    <filter id="deskShadow" x="-20%" y="-20%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="rgba(48, 70, 54, 0.10)"/>
+    </filter>
+  </defs>
+  <rect width="1440" height="1024" rx="40" fill="url(#deskBg)"/>
+  <circle cx="160" cy="920" r="170" fill="#F3E6D4" opacity="0.85"/>
+  <circle cx="1240" cy="110" r="120" fill="#E1F0E3" opacity="0.8"/>
+  <rect x="24" y="24" width="1392" height="976" rx="36" fill="#fffdf8" opacity="0.84"/>
+  <rect x="48" y="48" width="280" height="928" rx="28" fill="#203229"/>
+  <text x="84" y="104" fill="#F5F3EC" style="font:700 28px 'Avenir Next', 'PingFang SC', 'Noto Sans SC', sans-serif;">成长薄 Admin</text>
+  <text x="84" y="132" fill="#9FB6AA" style="font:500 13px 'Avenir Next', 'PingFang SC', 'Noto Sans SC', sans-serif;">目标推进系统后台</text>
+  
+          <text x="84" y="220" fill="#F5F3EC" style="font:600 15px 'Avenir Next', 'PingFang SC', 'Noto Sans SC', sans-serif;">用户管理</text>
+          <text x="84" y="262" fill="#748A80" style="font:600 15px 'Avenir Next', 'PingFang SC', 'Noto Sans SC', sans-serif;">模板管理</text>
+          <text x="84" y="304" fill="#748A80" style="font:600 15px 'Avenir Next', 'PingFang SC', 'Noto Sans SC', sans-serif;">数据统计</text>
+          <text x="84" y="346" fill="#748A80" style="font:600 15px 'Avenir Next', 'PingFang SC', 'Noto Sans SC', sans-serif;">系统配置</text>
+
+          <rect x="734" y="184" width="468" height="520" rx="34" fill="url(#deskBg)" filter="url(#deskShadow)"/>
+          <text x="780" y="252" fill="#2f6a52" style="font:700 14px 'Avenir Next', 'PingFang SC', 'Noto Sans SC', sans-serif; letter-spacing:1.5px;">ADMIN ACCESS</text>
+          <text x="780" y="304" fill="#203229" style="font:700 36px 'Avenir Next', 'PingFang SC', 'Noto Sans SC', sans-serif;">守住系统稳定，也守住用户成长数据</text>
+          <rect x="780" y="382" width="376" height="64" rx="20" fill="#FFFDF8" stroke="#d9e3d4"/>
+          <rect x="780" y="466" width="376" height="64" rx="20" fill="#FFFDF8" stroke="#d9e3d4"/>
+          <rect x="780" y="562" width="376" height="60" rx="30" fill="#2f6a52"/>
+          <text x="932" y="600" fill="#fff" style="font:700 18px 'Avenir Next', 'PingFang SC', 'Noto Sans SC', sans-serif;">登录后台</text>
+          <text x="780" y="654" fill="#6b786e" style="font:500 14px 'Avenir Next', 'PingFang SC', 'Noto Sans SC', sans-serif;">支持账号密码登录。被封禁的小程序用户会在业务接口收到 403。</text>
+        
+  <text x="364" y="88" fill="#203229" style="font:700 34px 'Avenir Next', 'PingFang SC', 'Noto Sans SC', sans-serif;">管理员登录</text>
+  <text x="364" y="116" fill="#6b786e" style="font:500 15px 'Avenir Next', 'PingFang SC', 'Noto Sans SC', sans-serif;">小程序用户与后台管理员采用两套独立登录体系</text>
+</svg>

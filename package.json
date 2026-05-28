@@ -1,0 +1,17 @@
+{
+  "name": "goalflow",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev:server": "pnpm --filter @goalflow/server dev",
+    "dev:mobile": "pnpm --filter @goalflow/mobile dev:h5",
+    "dev:admin": "pnpm --filter @goalflow/admin dev",
+    "build:server": "pnpm --filter @goalflow/server build",
+    "build:mobile": "pnpm --filter @goalflow/mobile build:h5",
+    "build:admin": "pnpm --filter @goalflow/admin build",
+    "start:server": "pnpm --filter @goalflow/server start",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck"
+  }
+}

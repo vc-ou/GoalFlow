@@ -1,0 +1,16 @@
+node_modules
+.pnpm-store
+dist
+.output
+.vite
+.turbo
+.env
+.env.*
+!.env.example
+coverage
+apps/mobile/dist
+apps/server/dist
+*.log
+.DS_Store
+*.tsbuildinfo
+project.private.config.json

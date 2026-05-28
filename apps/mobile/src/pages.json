@@ -1,0 +1,78 @@
+{
+  "pages": [
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "GoalFlow"
+      }
+    },
+    {
+      "path": "pages/plans/index",
+      "style": {
+        "navigationBarTitleText": "计划"
+      }
+    },
+    {
+      "path": "pages/plans/detail",
+      "style": {
+        "navigationBarTitleText": "计划详情"
+      }
+    },
+    {
+      "path": "pages/tasks/detail",
+      "style": {
+        "navigationBarTitleText": "任务详情"
+      }
+    },
+    {
+      "path": "pages/reviews/index",
+      "style": {
+        "navigationBarTitleText": "复盘"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "GoalFlow",
+    "navigationBarBackgroundColor": "#F8FAF8",
+    "backgroundColor": "#F8FAF8"
+  },
+  "tabBar": {
+    "color": "#98A2B3",
+    "selectedColor": "#16A76B",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "推进",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/plans/index",
+        "text": "路线",
+        "iconPath": "static/tabbar/plans.png",
+        "selectedIconPath": "static/tabbar/plans-active.png"
+      },
+      {
+        "pagePath": "pages/reviews/index",
+        "text": "复盘",
+        "iconPath": "static/tabbar/reviews.png",
+        "selectedIconPath": "static/tabbar/reviews-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "static/tabbar/profile.png",
+        "selectedIconPath": "static/tabbar/profile-active.png"
+      }
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGlow" x1="30" y1="20" x2="330" y2="844" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F9F5E9"/>
+      <stop offset="0.52" stop-color="#EEF7EE"/>
+      <stop offset="1" stop-color="#E7F0F6"/>
+    </linearGradient>
+    <linearGradient id="heroGreen" x1="42" y1="96" x2="340" y2="240" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E7F6E7"/>
+      <stop offset="1" stop-color="#D7E9F4"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="rgba(48, 70, 54, 0.10)"/>
+    </filter>
+  </defs>
+  <rect width="390" height="844" rx="38" fill="url(#bgGlow)"/>
+  <circle cx="322" cy="84" r="72" fill="#E8F3E2"/>
+  <circle cx="74" cy="742" r="92" fill="#F2E7D8" opacity="0.75"/>
+  <rect x="18" y="16" width="354" height="812" rx="34" fill="#fffdf8" opacity="0.72"/>
+  <text x="34" y="48" class="status">9:41</text>
+  <text x="312" y="48" class="status">5G 93%</text>
+  <text x="34" y="84" class="navTitle">欢迎回来</text>
+  <text x="34" y="108" class="navSub">微信授权后继续你的成长路线</text>
+  
+          <rect x="34" y="138" width="322" height="216" rx="28" fill="url(#heroGreen)" filter="url(#softShadow)"/>
+          <text x="58" y="174" class="eyebrow">GOAL-DRIVEN GROWTH</text>
+          <text x="58" y="210" class="headline"><tspan x="58" dy="0">不是打卡，不是日历。</tspan><tspan x="58" dy="30">而是把目标一步步推进成结果。</tspan></text>
+          <text x="58" y="282" class="body"><tspan x="58" dy="0">目标 → 阶段 → 行动 → 结果</tspan><tspan x="58" dy="20">专为 AI 创作者与独立开发者设计</tspan></text>
+          <rect x="58" y="382" width="274" height="56" rx="28" fill="#2f6a52" />
+          <text x="146" y="416" class="buttonText" fill="#fff">微信一键授权登录</text>
+          <rect x="58" y="452" width="274" height="52" rx="26" fill="#FFFFFFB8" stroke="#d9e3d4" />
+          <text x="135" y="484" class="buttonText" fill="#2f6a52">先看看产品亮点</text>
+          <rect x="34" y="542" width="322" height="120" rx="26" fill="#FFFDF8" stroke="#d9e3d4" />
+          <text x="58" y="576" class="title">你登录后会看到</text>
+          <text x="58" y="604" class="body"><tspan x="58" dy="0">1. 当前最重要的目标</tspan><tspan x="58" dy="22">2. 现在应该推进的任务</tspan><tspan x="58" dy="22">3. 明天特别想做的事</tspan></text>
+          <text x="34" y="738" class="caption">登录态 7 天有效 · token 失效后自动重新唤起微信登录</text>
+        
+  <style>
+    .status { font: 600 14px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #203229; }
+    .navTitle { font: 700 24px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #203229; }
+    .navSub { font: 500 13px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #6b786e; }
+    .eyebrow { font: 700 11px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; letter-spacing: 1.3px; fill: #2f6a52; }
+    .headline { font: 700 22px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #203229; }
+    .title { font: 700 17px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #203229; }
+    .body { font: 500 13px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #6b786e; }
+    .bodyStrong { font: 600 13px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #203229; }
+    .metric { font: 700 30px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #203229; }
+    .caption { font: 600 11px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #6b786e; }
+    .chip { font: 600 11px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #2f6a52; }
+    .buttonText { font: 700 13px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; }
+    .progressLabel { font: 700 12px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #87b8d8; }
+  </style>
+</svg>

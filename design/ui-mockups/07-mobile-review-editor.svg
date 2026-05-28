@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGlow" x1="30" y1="20" x2="330" y2="844" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F9F5E9"/>
+      <stop offset="0.52" stop-color="#EEF7EE"/>
+      <stop offset="1" stop-color="#E7F0F6"/>
+    </linearGradient>
+    <linearGradient id="heroGreen" x1="42" y1="96" x2="340" y2="240" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E7F6E7"/>
+      <stop offset="1" stop-color="#D7E9F4"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="rgba(48, 70, 54, 0.10)"/>
+    </filter>
+  </defs>
+  <rect width="390" height="844" rx="38" fill="url(#bgGlow)"/>
+  <circle cx="322" cy="84" r="72" fill="#E8F3E2"/>
+  <circle cx="74" cy="742" r="92" fill="#F2E7D8" opacity="0.75"/>
+  <rect x="18" y="16" width="354" height="812" rx="34" fill="#fffdf8" opacity="0.72"/>
+  <text x="34" y="48" class="status">9:41</text>
+  <text x="312" y="48" class="status">5G 93%</text>
+  <text x="34" y="84" class="navTitle">写复盘</text>
+  <text x="34" y="108" class="navSub">让经验能沉淀，不只是把任务做完</text>
+  
+          <rect x="34" y="138" width="322" height="664" rx="28" fill="#FFFDF8" stroke="#d9e3d4" filter="url(#softShadow)"/>
+          <text x="58" y="172" class="caption">今日收获</text>
+          <rect x="58" y="182" width="274" height="76" rx="18" fill="#F6F6F0" />
+          <text x="58" y="286" class="caption">遇到的问题</text>
+          <rect x="58" y="296" width="274" height="76" rx="18" fill="#F6F6F0" />
+          <text x="58" y="400" class="caption">新想法</text>
+          <rect x="58" y="410" width="274" height="76" rx="18" fill="#F6F6F0" />
+          <text x="58" y="514" class="caption">下一步行动</text>
+          <rect x="58" y="524" width="274" height="76" rx="18" fill="#F6F6F0" />
+          <text x="58" y="628" class="caption">关联计划</text>
+          <rect x="58" y="638" width="274" height="42" rx="18" fill="#F3F6F8" />
+          <text x="76" y="664" class="bodyStrong">AI 创作者陪跑营</text>
+          <rect x="58" y="708" width="274" height="46" rx="23" fill="#2f6a52" />
+          <text x="164" y="737" class="buttonText" fill="#fff">保存复盘</text>
+          <text x="58" y="782" class="caption">同一天可创建多条。复盘不参与进度计算。</text>
+        
+  <style>
+    .status { font: 600 14px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #203229; }
+    .navTitle { font: 700 24px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #203229; }
+    .navSub { font: 500 13px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #6b786e; }
+    .eyebrow { font: 700 11px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; letter-spacing: 1.3px; fill: #2f6a52; }
+    .headline { font: 700 22px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #203229; }
+    .title { font: 700 17px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #203229; }
+    .body { font: 500 13px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #6b786e; }
+    .bodyStrong { font: 600 13px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #203229; }
+    .metric { font: 700 30px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #203229; }
+    .caption { font: 600 11px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #6b786e; }
+    .chip { font: 600 11px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #2f6a52; }
+    .buttonText { font: 700 13px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; }
+    .progressLabel { font: 700 12px "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif; fill: #87b8d8; }
+  </style>
+</svg>
