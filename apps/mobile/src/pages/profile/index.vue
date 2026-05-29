@@ -60,9 +60,12 @@ function logout() {
 }
 
 function resolveLoginErrorMessage(error: unknown) {
-  const payload = error as { message?: string; wechat?: { errmsg?: string; errcode?: number } };
+  const payload = error as { errMsg?: string; message?: string; wechat?: { errmsg?: string; errcode?: number } };
   if (payload?.wechat?.errmsg) {
     return `微信登录失败：${payload.wechat.errmsg}`;
+  }
+  if (payload?.errMsg) {
+    return `登录失败：${payload.errMsg}`;
   }
   if (payload?.message) {
     return `登录失败：${payload.message}`;
