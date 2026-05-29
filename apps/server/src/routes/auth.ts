@@ -31,7 +31,15 @@ authRouter.post(
         });
         return null;
       }
-      throw error;
+
+      const fallbackError = error as { name?: string; message?: string };
+      console.error("WeChat auth failed before session resolution", error);
+      res.status(401).json({
+        code: "WECHAT_AUTH_FAILED",
+        message: fallbackError?.message || "WECHAT_AUTH_FAILED",
+        errorName: fallbackError?.name || "Error"
+      });
+      return null;
     });
 
     if (!session) {

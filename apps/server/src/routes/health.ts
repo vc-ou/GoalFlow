@@ -10,6 +10,7 @@ healthRouter.get("/version", (_req, res) => {
   res.json({
     ok: true,
     version: process.env.GIT_COMMIT || process.env.CLOUDBASERUN_VERSION || "local",
-    loginErrors: "wechat-auth-details"
+    loginErrors: "wechat-auth-details",
+    authClassifier: "fallback-visible"
   });
 });
