@@ -22,12 +22,13 @@ authRouter.post(
     }
 
     const session = await resolveWechatOpenId(code).catch((error: unknown) => {
-      const authError = error as { code?: string; message?: string; payload?: unknown };
+      const authError = error as { code?: string; message?: string; payload?: unknown; diagnostics?: unknown };
       if (authError?.code === "WECHAT_AUTH_FAILED") {
         res.status(401).json({
           code: "WECHAT_AUTH_FAILED",
           message: authError.message || "WECHAT_AUTH_FAILED",
-          wechat: authError.payload
+          wechat: authError.payload,
+          diagnostics: authError.diagnostics
         });
         return null;
       }

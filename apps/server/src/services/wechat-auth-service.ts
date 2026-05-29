@@ -8,12 +8,21 @@ interface WechatSessionResponse {
   errmsg?: string;
 }
 
+interface WechatAuthDiagnostics {
+  code?: string;
+  hostname?: string;
+  port?: string | number;
+  syscall?: string;
+  causeMessage?: string;
+}
+
 export class WechatAuthError extends Error {
   readonly code = "WECHAT_AUTH_FAILED";
 
   constructor(
     message: string,
-    readonly payload?: WechatSessionResponse
+    readonly payload?: WechatSessionResponse,
+    readonly diagnostics?: WechatAuthDiagnostics
   ) {
     super(message);
     this.name = "WechatAuthError";
@@ -36,6 +45,8 @@ export async function resolveWechatOpenId(code: string) {
 
   const response = await fetch(url, {
     method: "GET"
+  }).catch((error: unknown) => {
+    throw new WechatAuthError("WECHAT_AUTH_REQUEST_FAILED", undefined, getFetchDiagnostics(error));
   });
 
   const payload = (await response.json()) as WechatSessionResponse;
@@ -51,5 +62,25 @@ export async function resolveWechatOpenId(code: string) {
   return {
     openid: payload.openid,
     mode: "wechat" as const
+  };
+}
+
+function getFetchDiagnostics(error: unknown): WechatAuthDiagnostics {
+  const fetchError = error as {
+    cause?: {
+      code?: string;
+      hostname?: string;
+      port?: string | number;
+      syscall?: string;
+      message?: string;
+    };
+  };
+
+  return {
+    code: fetchError.cause?.code,
+    hostname: fetchError.cause?.hostname,
+    port: fetchError.cause?.port,
+    syscall: fetchError.cause?.syscall,
+    causeMessage: fetchError.cause?.message
   };
 }
