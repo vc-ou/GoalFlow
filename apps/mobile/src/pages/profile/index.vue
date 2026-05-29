@@ -33,6 +33,9 @@ async function handleWechatLogin() {
     isLoggedIn.value = true;
     await loadProfile();
     uni.showToast({ title: "登录成功", icon: "none" });
+  } catch (error) {
+    const message = resolveLoginErrorMessage(error);
+    uni.showToast({ title: message, icon: "none" });
   } finally {
     loading.value = false;
   }
@@ -54,6 +57,17 @@ function logout() {
   isLoggedIn.value = false;
   profile.value = null;
   uni.showToast({ title: "已退出登录", icon: "none" });
+}
+
+function resolveLoginErrorMessage(error: unknown) {
+  const payload = error as { message?: string; wechat?: { errmsg?: string; errcode?: number } };
+  if (payload?.wechat?.errmsg) {
+    return `微信登录失败：${payload.wechat.errmsg}`;
+  }
+  if (payload?.message) {
+    return `登录失败：${payload.message}`;
+  }
+  return "登录失败，请稍后重试";
 }
 
 onMounted(() => {

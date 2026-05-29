@@ -8,6 +8,16 @@ interface WechatSessionResponse {
   errmsg?: string;
 }
 
+export class WechatAuthError extends Error {
+  constructor(
+    message: string,
+    readonly payload?: WechatSessionResponse
+  ) {
+    super(message);
+    this.name = "WechatAuthError";
+  }
+}
+
 export async function resolveWechatOpenId(code: string) {
   if (process.env.VITEST === "true" || !env.WECHAT_APP_ID || !env.WECHAT_APP_SECRET) {
     return {
@@ -29,11 +39,11 @@ export async function resolveWechatOpenId(code: string) {
   const payload = (await response.json()) as WechatSessionResponse;
 
   if (!response.ok) {
-    throw new Error("WECHAT_AUTH_REQUEST_FAILED");
+    throw new WechatAuthError("WECHAT_AUTH_REQUEST_FAILED", payload);
   }
 
   if (!payload.openid) {
-    throw new Error(payload.errmsg || "WECHAT_AUTH_INVALID_RESPONSE");
+    throw new WechatAuthError(payload.errmsg || "WECHAT_AUTH_INVALID_RESPONSE", payload);
   }
 
   return {
