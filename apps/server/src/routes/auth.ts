@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
 import { UserModel } from "../models/user.js";
 import { asyncHandler } from "../utils/async-handler.js";
-import { resolveWechatOpenId, WechatAuthError } from "../services/wechat-auth-service.js";
+import { resolveWechatOpenId } from "../services/wechat-auth-service.js";
 
 export const authRouter = Router();
 
@@ -22,11 +22,12 @@ authRouter.post(
     }
 
     const session = await resolveWechatOpenId(code).catch((error: unknown) => {
-      if (error instanceof WechatAuthError) {
+      const authError = error as { code?: string; message?: string; payload?: unknown };
+      if (authError?.code === "WECHAT_AUTH_FAILED") {
         res.status(401).json({
           code: "WECHAT_AUTH_FAILED",
-          message: error.message,
-          wechat: error.payload
+          message: authError.message || "WECHAT_AUTH_FAILED",
+          wechat: authError.payload
         });
         return null;
       }

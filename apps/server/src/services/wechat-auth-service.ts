@@ -9,6 +9,8 @@ interface WechatSessionResponse {
 }
 
 export class WechatAuthError extends Error {
+  readonly code = "WECHAT_AUTH_FAILED";
+
   constructor(
     message: string,
     readonly payload?: WechatSessionResponse
