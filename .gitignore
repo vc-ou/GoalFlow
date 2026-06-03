@@ -15,3 +15,5 @@ apps/server/dist
 .DS_Store
 *.tsbuildinfo
 project.private.config.json
+.codex-artifacts
+.venv-avatar
