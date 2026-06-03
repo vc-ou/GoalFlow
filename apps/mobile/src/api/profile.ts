@@ -18,3 +18,10 @@ export interface ProfilePayload {
 export function fetchProfile() {
   return http<ProfilePayload>("/profile");
 }
+
+export function updateProfile(data: { nickname?: string; avatar?: string }) {
+  return http<ProfilePayload["user"]>("/profile", {
+    method: "PATCH",
+    data
+  });
+}

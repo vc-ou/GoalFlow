@@ -10,7 +10,7 @@ export const authRouter = Router();
 authRouter.post(
   "/login",
   asyncHandler(async (req, res) => {
-    const { code, nickname = "新用户", avatar = "" } = req.body as {
+    const { code, nickname, avatar } = req.body as {
       code?: string;
       nickname?: string;
       avatar?: string;
@@ -48,17 +48,28 @@ authRouter.post(
     }
 
     const { openid } = session;
-    let user = await UserModel.findOne({ openid });
+    const profileUpdates: { nickname?: string; avatar?: string } = {};
+    if (typeof nickname === "string" && nickname.trim()) {
+      profileUpdates.nickname = nickname.trim();
+    }
+    if (typeof avatar === "string" && avatar.trim()) {
+      profileUpdates.avatar = avatar.trim();
+    }
 
-    if (!user) {
-      user = await UserModel.create({
-        openid,
-        nickname,
-        avatar
-      });
-    } else {
-      user.nickname = nickname || user.nickname;
-      user.avatar = avatar ?? user.avatar;
+    const user = await UserModel.findOneAndUpdate(
+      { openid },
+      {
+        $setOnInsert: {
+          openid,
+          nickname: normalizeNickname(nickname),
+          avatar: normalizeAvatar(avatar)
+        }
+      },
+      { new: true, upsert: true }
+    );
+
+    if (Object.keys(profileUpdates).length) {
+      user.set(profileUpdates);
       await user.save();
     }
 
@@ -76,3 +87,12 @@ authRouter.post(
     });
   })
 );
+
+function normalizeNickname(nickname: string | undefined) {
+  const value = nickname?.trim();
+  return value || "微信用户";
+}
+
+function normalizeAvatar(avatar: string | undefined) {
+  return avatar?.trim() || "";
+}

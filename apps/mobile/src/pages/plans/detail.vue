@@ -38,8 +38,6 @@ const taskForm = ref({
   milestone_id: "",
   title: "",
   description: "",
-  execution_platforms: "",
-  search_keywords: "",
   completion_criteria: "",
   weight: 10,
   priority: "normal",
@@ -154,14 +152,14 @@ async function handleCreateTask() {
     plan_id: planId.value,
     milestone_id: taskForm.value.milestone_id,
     title: taskForm.value.title,
-    description: taskForm.value.description,
-    execution_platforms: splitInput(taskForm.value.execution_platforms),
-    search_keywords: splitInput(taskForm.value.search_keywords),
+    description: taskForm.value.description.trim(),
+    execution_platforms: [],
+    search_keywords: [],
     completion_criteria: taskForm.value.completion_criteria,
     weight: Number(taskForm.value.weight || 10),
     priority: taskForm.value.priority,
     tags: [],
-    remark: taskForm.value.remark,
+    remark: taskForm.value.remark.trim(),
     sort_order: nextSortOrder()
   });
 
@@ -169,8 +167,6 @@ async function handleCreateTask() {
   uni.showToast({ title: "任务已创建，已同步到首页", icon: "none" });
   taskForm.value.title = "";
   taskForm.value.description = "";
-  taskForm.value.execution_platforms = "";
-  taskForm.value.search_keywords = "";
   taskForm.value.completion_criteria = "";
   taskForm.value.remark = "";
   await loadPlan();
@@ -206,6 +202,7 @@ function selectMilestone(milestone: ApiMilestone) {
   const id = String(milestone.id || milestone._id || "");
   activeMilestoneId.value = id;
   taskForm.value.milestone_id = id;
+  showMilestoneManager.value = true;
 }
 
 async function saveMilestone(milestone: ApiMilestone) {
@@ -327,13 +324,6 @@ async function quickSetTaskStatus(task: ApiTask, status: TaskStatusFeedback) {
   } finally {
     actionPendingTaskId.value = "";
   }
-}
-
-function splitInput(value: string) {
-  return value
-    .split(/[\n,，]/)
-    .map((item) => item.trim())
-    .filter(Boolean);
 }
 
 function startDrag(type: "milestone" | "task", id: string, event: TouchEvent) {
@@ -622,17 +612,15 @@ onLoad((options) => {
         </view>
 
         <view class="builder-block">
-          <view class="builder-step">
+        <view class="builder-step">
             <text class="builder-step-index">2</text>
             <text class="builder-step-title">任务</text>
           </view>
           <text class="section-hint">当前归属：{{ activeMilestone?.title ?? "请先创建阶段" }}</text>
         <input v-model="taskForm.title" class="input" placeholder="任务名称" />
         <textarea v-model="taskForm.description" class="textarea" auto-height placeholder="怎么做" />
-        <input v-model="taskForm.execution_platforms" class="input" placeholder="执行平台，用逗号分隔" />
-        <input v-model="taskForm.search_keywords" class="input" placeholder="搜索关键词，用逗号分隔" />
         <textarea v-model="taskForm.completion_criteria" class="textarea" auto-height placeholder="完成标准" />
-        <input v-model="taskForm.remark" class="input" placeholder="补充备注" />
+        <textarea v-model="taskForm.remark" class="textarea textarea-compact" auto-height placeholder="补充备注" />
         <button class="primary-button" @click="handleCreateTask">创建任务</button>
         </view>
       </view>

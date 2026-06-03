@@ -9,12 +9,11 @@ const task = ref<ApiTask | null>(null);
 const taskId = ref("");
 const loading = ref(false);
 const planId = ref("");
+const isEditing = ref(false);
 
 const form = ref({
   title: "",
   description: "",
-  execution_platforms: "",
-  search_keywords: "",
   completion_criteria: "",
   weight: 10,
   priority: "normal",
@@ -33,14 +32,13 @@ async function loadTask() {
     planId.value = String((data as ApiTask & { plan_id?: string }).plan_id || "");
     form.value = {
       title: data.title,
-      description: data.description,
-      execution_platforms: data.execution_platforms.join(", "),
-      search_keywords: data.search_keywords.join(", "),
+      description: buildTaskHowTo(data),
       completion_criteria: data.completion_criteria,
       weight: data.weight,
       priority: data.priority,
       remark: data.remark
     };
+    isEditing.value = false;
   } finally {
     loading.value = false;
   }
@@ -49,18 +47,27 @@ async function loadTask() {
 async function saveTask() {
   await updateTask(taskId.value, {
     title: form.value.title,
-    description: form.value.description,
-    execution_platforms: splitInput(form.value.execution_platforms),
-    search_keywords: splitInput(form.value.search_keywords),
+    description: form.value.description.trim(),
+    execution_platforms: [],
+    search_keywords: [],
     completion_criteria: form.value.completion_criteria,
     weight: Number(form.value.weight || 10),
     priority: form.value.priority,
     tags: task.value?.tags ?? [],
-    remark: form.value.remark,
+    remark: form.value.remark.trim(),
     sort_order: task.value?.sort_order ?? 1
   });
   uni.showToast({ title: "任务已保存", icon: "none" });
   await loadTask();
+}
+
+async function handleTaskEditorAction() {
+  if (!isEditing.value) {
+    isEditing.value = true;
+    return;
+  }
+
+  await saveTask();
 }
 
 async function changeStatus(status: TaskStatusFeedback) {
@@ -89,11 +96,16 @@ function backToPlan() {
   });
 }
 
-function splitInput(value: string) {
-  return value
-    .split(/[\n,，]/)
-    .map((item) => item.trim())
-    .filter(Boolean);
+function buildTaskHowTo(data: ApiTask) {
+  const blocks = [data.description.trim()];
+  if (data.execution_platforms.length) {
+    blocks.push(`可以先从这些地方开始：${data.execution_platforms.join("、")}`);
+  }
+  if (data.search_keywords.length) {
+    blocks.push(`也可以直接搜这些线索：${data.search_keywords.join("、")}`);
+  }
+
+  return blocks.filter(Boolean).join("\n\n");
 }
 
 onLoad((options) => {
@@ -141,34 +153,26 @@ onLoad((options) => {
       <view class="section-head">
         <view>
           <text class="section-title">行动说明</text>
-          <text class="helper">这里保留完整编辑能力，但视觉上先帮你读重点。</text>
+          <text class="helper">
+            {{ isEditing ? "编辑模式已开启，输入框会随内容自动展开。" : "当前先按预览展示，点编辑任务后再修改内容。" }}
+          </text>
         </view>
-        <button class="save-pill" @click="saveTask">保存任务</button>
+        <button class="save-pill" :class="{ 'edit-pill-active': isEditing }" @click="handleTaskEditorAction">
+          {{ isEditing ? "保存任务" : "编辑任务" }}
+        </button>
       </view>
-      <input v-model="form.title" class="input title-input" placeholder="任务名称" />
-      <textarea v-model="form.description" class="textarea" auto-height placeholder="怎么做" />
-      <view class="info-grid">
-        <view class="info-card">
-          <text class="info-icon">◎</text>
-          <text class="info-label">执行平台</text>
-          <input v-model="form.execution_platforms" class="inline-input" placeholder="执行平台，用逗号分隔" />
-        </view>
-        <view class="info-card">
-          <text class="info-icon purple">⌕</text>
-          <text class="info-label">搜索关键词</text>
-          <input v-model="form.search_keywords" class="inline-input" placeholder="搜索关键词，用逗号分隔" />
-        </view>
-      </view>
+      <input v-model="form.title" :disabled="!isEditing" class="input title-input" :class="{ 'field-readonly': !isEditing }" placeholder="任务名称" />
+      <textarea v-model="form.description" :disabled="!isEditing" class="textarea" :class="{ 'field-readonly': !isEditing }" auto-height placeholder="怎么做" />
       <view class="criteria-card">
         <text class="info-icon purple">◎</text>
         <view class="criteria-copy">
           <text class="info-label">完成标准</text>
-          <textarea v-model="form.completion_criteria" class="inline-textarea" auto-height placeholder="完成标准" />
+          <textarea v-model="form.completion_criteria" :disabled="!isEditing" class="inline-textarea" :class="{ 'field-readonly': !isEditing }" auto-height placeholder="完成标准" />
         </view>
       </view>
       <view class="remark-card">
         <text class="info-label">补充备注</text>
-        <input v-model="form.remark" class="inline-input" placeholder="补充备注" />
+        <textarea v-model="form.remark" :disabled="!isEditing" class="inline-textarea remark-textarea" :class="{ 'field-readonly': !isEditing }" auto-height placeholder="补充备注" />
       </view>
     </view>
 
@@ -350,7 +354,6 @@ onLoad((options) => {
 
 .input,
 .textarea,
-.inline-input,
 .inline-textarea {
   width: 100%;
   border-radius: 22rpx;
@@ -421,23 +424,16 @@ onLoad((options) => {
   font-size: 23rpx;
 }
 
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14rpx;
-  margin-top: 20rpx;
+.edit-pill-active {
+  background: linear-gradient(135deg, #2ed486, #16aa68);
+  color: #fff;
 }
 
-.info-card,
 .criteria-card,
 .remark-card {
   border-radius: 24rpx;
   background: linear-gradient(135deg, #f8f7ff, #fbfaff);
   box-shadow: inset 0 0 0 1rpx rgba(127, 108, 240, 0.06);
-}
-
-.info-card {
-  padding: 18rpx;
 }
 
 .criteria-card {
@@ -464,7 +460,6 @@ onLoad((options) => {
   color: #7f6cf0;
 }
 
-.inline-input,
 .inline-textarea {
   margin-top: 8rpx;
   padding: 0;
@@ -477,6 +472,14 @@ onLoad((options) => {
 
 .inline-textarea {
   min-height: 60rpx;
+}
+
+.remark-textarea {
+  margin-top: 12rpx;
+}
+
+.field-readonly {
+  opacity: 1;
 }
 
 .criteria-copy {

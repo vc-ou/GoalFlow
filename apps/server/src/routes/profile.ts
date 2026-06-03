@@ -52,3 +52,41 @@ profileRouter.get(
     });
   })
 );
+
+profileRouter.patch(
+  "/profile",
+  asyncHandler(async (req, res) => {
+    const userId = (req as AuthenticatedRequest).user!.userId;
+    const { nickname, avatar } = req.body as { nickname?: string; avatar?: string };
+
+    const updates: Partial<Pick<UserDocument, "nickname" | "avatar">> = {};
+    if (typeof nickname === "string") {
+      const trimmedNickname = nickname.trim();
+      if (trimmedNickname.length > 40) {
+        res.status(400).json({ code: "INVALID_INPUT", message: "nickname is too long" });
+        return;
+      }
+      updates.nickname = trimmedNickname || "微信用户";
+    }
+    if (typeof avatar === "string") {
+      updates.avatar = avatar.trim();
+    }
+
+    const user = await UserModel.findByIdAndUpdate(userId, updates, { new: true }).lean<
+      LeanEntity<UserDocument> | null
+    >();
+
+    if (!user) {
+      res.status(404).json({ code: "USER_NOT_FOUND", message: "User not found" });
+      return;
+    }
+
+    res.json({
+      id: String(user._id),
+      nickname: user.nickname,
+      avatar: user.avatar,
+      current_plan_id: user.current_plan_id,
+      status: user.status
+    });
+  })
+);

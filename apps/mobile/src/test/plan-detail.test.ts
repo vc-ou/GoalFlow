@@ -94,6 +94,26 @@ describe("PlanDetailPage", () => {
     expect(wrapper.text()).toContain("写阶段复盘");
   });
 
+  it("opens milestone editing after clicking a stage node", async () => {
+    const wrapper = mount(PlanDetailPage);
+    await flushPromises();
+
+    const targetNode = wrapper.findAll("button").find((button) => button.text().includes("做出第一版样板内容"));
+    expect(targetNode).toBeTruthy();
+
+    await targetNode!.trigger("click");
+    await flushPromises();
+
+    expect(wrapper.text()).toContain("阶段管理");
+
+    const milestoneInputs = wrapper
+      .findAll("input")
+      .filter((item) => item.attributes("placeholder")?.includes("阶段名称"));
+    const milestoneTitles = milestoneInputs.map((item) => (item.element as HTMLInputElement).value);
+
+    expect(milestoneTitles).toContain("做出第一版样板内容");
+  });
+
   it("supports quick status updates from the task list", async () => {
     const wrapper = mount(PlanDetailPage);
     await flushPromises();
@@ -179,7 +199,9 @@ describe("PlanDetailPage", () => {
     expect(createTaskMock).toHaveBeenCalledWith(expect.objectContaining({
       plan_id: "plan-1",
       milestone_id: "m-1",
-      title: "新增首页任务"
+      title: "新增首页任务",
+      execution_platforms: [],
+      search_keywords: []
     }));
     expect(setCurrentPlanMock).toHaveBeenCalledWith("plan-1");
   });

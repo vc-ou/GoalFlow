@@ -11,14 +11,6 @@ const { loginWithWechat } = await import("../api/auth");
 describe("auth API", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(uni.getUserProfile).mockImplementation((options) => {
-      options?.success?.({
-        userInfo: {
-          nickName: "微信昵称",
-          avatarUrl: "https://example.com/avatar.png"
-        }
-      } as UniApp.GetUserProfileRes);
-    });
     vi.mocked(uni.login).mockImplementation((options) => {
       options?.success?.({ code: "wechat-code" } as UniApp.LoginRes);
     });
@@ -28,26 +20,22 @@ describe("auth API", () => {
     });
   });
 
-  it("gets WeChat profile before code login and sends nickname/avatar to backend", async () => {
+  it("logs in with a WeChat code without requesting profile data", async () => {
     await loginWithWechat();
 
-    expect(uni.getUserProfile).toHaveBeenCalledWith(expect.objectContaining({
-      desc: expect.stringContaining("头像和昵称")
-    }));
+    expect(uni.getUserProfile).not.toHaveBeenCalled();
     expect(uni.login).toHaveBeenCalledWith(expect.objectContaining({
       provider: "weixin"
     }));
     expect(httpMock).toHaveBeenCalledWith("/login", {
       method: "POST",
       data: {
-        code: "wechat-code",
-        nickname: "微信昵称",
-        avatar: "https://example.com/avatar.png"
+        code: "wechat-code"
       }
     });
     expect(uni.setStorageSync).toHaveBeenCalledWith("token", "jwt-token");
     expect(uni.setStorageSync).toHaveBeenCalledWith("user_id", "user-1");
-    expect(uni.setStorageSync).toHaveBeenCalledWith("user_nickname", "微信昵称");
-    expect(uni.setStorageSync).toHaveBeenCalledWith("user_avatar", "https://example.com/avatar.png");
+    expect(uni.setStorageSync).toHaveBeenCalledWith("user_nickname", "微信用户");
+    expect(uni.setStorageSync).toHaveBeenCalledWith("user_avatar", "");
   });
 });

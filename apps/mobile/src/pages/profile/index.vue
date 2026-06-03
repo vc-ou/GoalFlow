@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { loginWithWechat, logoutAuth } from "../../api/auth";
-import { fetchProfile, type ProfilePayload } from "../../api/profile";
+import { fetchProfile, updateProfile, type ProfilePayload } from "../../api/profile";
 
 const profile = ref<ProfilePayload | null>(null);
 const loading = ref(false);
 const isLoggedIn = ref(Boolean(uni.getStorageSync("token")));
+const draftNickname = ref("");
+const draftAvatar = ref("");
 
 const nickname = computed(() => profile.value?.user.nickname || "GoalFlow 玩家");
 const avatarText = computed(() => nickname.value.slice(0, 1).toUpperCase());
@@ -20,6 +22,7 @@ async function loadProfile() {
   loading.value = true;
   try {
     profile.value = await fetchProfile();
+    syncDraftProfile();
     isLoggedIn.value = true;
   } finally {
     loading.value = false;
@@ -49,6 +52,8 @@ function clearCache() {
   logoutAuth();
   isLoggedIn.value = false;
   profile.value = null;
+  draftNickname.value = "";
+  draftAvatar.value = "";
   uni.showToast({ title: "缓存已清理", icon: "none" });
 }
 
@@ -56,7 +61,52 @@ function logout() {
   logoutAuth();
   isLoggedIn.value = false;
   profile.value = null;
+  draftNickname.value = "";
+  draftAvatar.value = "";
   uni.showToast({ title: "已退出登录", icon: "none" });
+}
+
+function syncDraftProfile() {
+  draftNickname.value = profile.value?.user.nickname || "";
+  draftAvatar.value = profile.value?.user.avatar || "";
+}
+
+function handleNicknameInput(event: Event) {
+  draftNickname.value = String((event.target as HTMLInputElement | null)?.value || "").trim();
+}
+
+function handleAvatarChoose(event: Event) {
+  const avatarUrl = (event as Event & { detail?: { avatarUrl?: string } }).detail?.avatarUrl;
+  if (avatarUrl) {
+    draftAvatar.value = avatarUrl;
+  }
+}
+
+async function saveProfile() {
+  if (!draftNickname.value.trim()) {
+    uni.showToast({ title: "请先填写昵称", icon: "none" });
+    return;
+  }
+
+  loading.value = true;
+  try {
+    const user = await updateProfile({
+      nickname: draftNickname.value,
+      avatar: draftAvatar.value
+    });
+    if (profile.value) {
+      profile.value.user = user;
+    }
+    uni.setStorageSync("user_nickname", user.nickname);
+    uni.setStorageSync("user_avatar", user.avatar);
+    syncDraftProfile();
+    uni.showToast({ title: "资料已更新", icon: "none" });
+  } catch (error) {
+    const payload = error as { message?: string; errMsg?: string };
+    uni.showToast({ title: payload?.message || payload?.errMsg || "保存失败，请稍后重试", icon: "none" });
+  } finally {
+    loading.value = false;
+  }
 }
 
 function resolveLoginErrorMessage(error: unknown) {
@@ -123,6 +173,23 @@ onMounted(() => {
     <view v-if="isLoggedIn" class="card">
       <text class="section-title">设置</text>
       <text class="helper">这里先保持轻量，只放最必要的账号操作。更多偏好设置留给下一版。</text>
+      <view class="profile-form">
+        <button class="avatar-picker" open-type="chooseAvatar" @chooseavatar="handleAvatarChoose">
+          <image v-if="draftAvatar" class="avatar form-avatar" :src="draftAvatar" mode="aspectFill" />
+          <view v-else class="avatar avatar-fallback form-avatar">
+            <text>{{ avatarText }}</text>
+          </view>
+          <text class="avatar-picker-text">选择微信头像</text>
+        </button>
+        <input
+          class="nickname-input"
+          type="nickname"
+          :value="draftNickname"
+          placeholder="填写微信昵称"
+          @input="handleNicknameInput"
+        />
+        <button class="soft-button" :disabled="loading" @click="saveProfile">保存头像昵称</button>
+      </view>
       <button class="primary-button" @click="goHome">回到推进面板</button>
       <button class="soft-button" @click="clearCache">清理缓存</button>
       <button class="danger-button" @click="logout">退出登录</button>
@@ -260,6 +327,52 @@ onMounted(() => {
   font-size: 32rpx;
   font-weight: 900;
   color: #111827;
+}
+
+.profile-form {
+  margin-top: 20rpx;
+  padding: 20rpx;
+  border-radius: 26rpx;
+  background: #f7fbf8;
+}
+
+.avatar-picker {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  background: transparent;
+  border: 0;
+}
+
+.avatar-picker::after {
+  border: 0;
+}
+
+.form-avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 28rpx;
+}
+
+.avatar-picker-text {
+  color: #16a76b;
+  font-size: 26rpx;
+  font-weight: 800;
+}
+
+.nickname-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 78rpx;
+  margin-top: 18rpx;
+  padding: 0 24rpx;
+  border-radius: 24rpx;
+  background: #fff;
+  color: #111827;
+  font-size: 28rpx;
 }
 
 .primary-button,
