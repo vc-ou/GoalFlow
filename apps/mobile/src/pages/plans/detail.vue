@@ -137,7 +137,7 @@ async function handleDeletePlan() {
 }
 
 function goReviews() {
-  uni.navigateTo({
+  uni.switchTab({
     url: "/pages/reviews/index"
   });
 }

@@ -27,10 +27,12 @@ vi.mock("../api/tasks", () => ({
     sort_order: 1
   }),
   updateTask: vi.fn().mockResolvedValue({}),
-  updateTaskStatus: vi.fn().mockResolvedValue({})
+  updateTaskStatus: vi.fn().mockResolvedValue({}),
+  deleteTask: vi.fn().mockResolvedValue({ success: true })
 }));
 
 const { updateTask: updateTaskMock } = await import("../api/tasks");
+const { deleteTask: deleteTaskMock } = await import("../api/tasks");
 
 describe("TaskDetailPage", () => {
   beforeEach(() => {
@@ -72,5 +74,22 @@ describe("TaskDetailPage", () => {
       search_keywords: [],
       remark: "记录今天最有价值的一条线索"
     }));
+  });
+
+  it("deletes the task from edit mode and returns to the plan", async () => {
+    const wrapper = mount(TaskDetailPage);
+    await flushPromises();
+
+    const editButton = wrapper.findAll("button").find((button) => button.text() === "编辑任务");
+    await editButton!.trigger("click");
+    await flushPromises();
+
+    const deleteButton = wrapper.findAll("button").find((button) => button.text() === "删除任务");
+    expect(deleteButton).toBeTruthy();
+
+    await deleteButton!.trigger("click");
+
+    expect(deleteTaskMock).toHaveBeenCalledWith("task-1");
+    expect(uni.reLaunch).toHaveBeenCalledWith({ url: "/pages/plans/detail?id=plan-1" });
   });
 });

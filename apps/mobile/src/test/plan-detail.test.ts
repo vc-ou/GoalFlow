@@ -220,6 +220,18 @@ describe("PlanDetailPage", () => {
     expect(wrapper.text()).toContain("已是当前计划");
   });
 
+  it("opens the reviews tab from the stage review button", async () => {
+    const wrapper = mount(PlanDetailPage);
+    await flushPromises();
+
+    const button = wrapper.findAll("button").find((item) => item.text() === "写阶段复盘");
+    expect(button).toBeTruthy();
+
+    await button!.trigger("click");
+
+    expect(uni.switchTab).toHaveBeenCalledWith({ url: "/pages/reviews/index" });
+  });
+
   it("keeps the current plan button selected from local cache", async () => {
     vi.mocked(uni.getStorageSync).mockImplementation((key?: string) => {
       if (key === "token") return "token";

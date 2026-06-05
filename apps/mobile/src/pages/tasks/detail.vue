@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onLoad } from "@dcloudio/uni-app";
 import { ref } from "vue";
-import { fetchTask, updateTask, updateTaskStatus } from "../../api/tasks";
+import { deleteTask, fetchTask, updateTask, updateTaskStatus } from "../../api/tasks";
 import type { ApiTask } from "../../api/types";
 import { getTaskStatusToast, type TaskStatusFeedback } from "../../utils/task-feedback";
 
@@ -10,6 +10,7 @@ const taskId = ref("");
 const loading = ref(false);
 const planId = ref("");
 const isEditing = ref(false);
+const deleting = ref(false);
 
 const form = ref({
   title: "",
@@ -77,6 +78,27 @@ async function changeStatus(status: TaskStatusFeedback) {
     icon: "none"
   });
   await loadTask();
+}
+
+async function handleDeleteTask() {
+  if (!taskId.value || deleting.value) return;
+
+  deleting.value = true;
+  try {
+    await deleteTask(taskId.value);
+    uni.showToast({ title: "任务已删除", icon: "none" });
+
+    if (planId.value) {
+      uni.reLaunch({
+        url: `/pages/plans/detail?id=${planId.value}`
+      });
+      return;
+    }
+
+    backToHome();
+  } finally {
+    deleting.value = false;
+  }
 }
 
 function backToHome() {
@@ -173,6 +195,12 @@ onLoad((options) => {
       <view class="remark-card">
         <text class="info-label">补充备注</text>
         <textarea v-model="form.remark" :disabled="!isEditing" class="inline-textarea remark-textarea" :class="{ 'field-readonly': !isEditing }" auto-height placeholder="补充备注" />
+      </view>
+      <view v-if="isEditing" class="danger-zone">
+        <text class="helper">这个任务如果不再需要，可以直接删除。</text>
+        <button class="danger-button" :disabled="deleting" @click="handleDeleteTask">
+          {{ deleting ? "删除中..." : "删除任务" }}
+        </button>
       </view>
     </view>
 
@@ -394,6 +422,7 @@ onLoad((options) => {
 .primary-button,
 .soft-button,
 .save-pill,
+.danger-button,
 .plan-button,
 .home-button {
   flex: 1;
@@ -413,6 +442,11 @@ onLoad((options) => {
 .soft-button {
   background: #edf8f2;
   color: #16a76b;
+}
+
+.danger-button {
+  background: #f5e5df;
+  color: #9a4b2f;
 }
 
 .save-pill {
@@ -476,6 +510,14 @@ onLoad((options) => {
 
 .remark-textarea {
   margin-top: 12rpx;
+}
+
+.danger-zone {
+  margin-top: 18rpx;
+  padding: 20rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(135deg, #fff8f4, #fff2eb);
+  box-shadow: inset 0 0 0 1rpx rgba(154, 75, 47, 0.08);
 }
 
 .field-readonly {

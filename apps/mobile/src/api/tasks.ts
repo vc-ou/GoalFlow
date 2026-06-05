@@ -25,3 +25,9 @@ export function updateTaskStatus(taskId: string, status: string) {
     data: { status }
   });
 }
+
+export function deleteTask(taskId: string) {
+  return http<{ success: boolean }>(`/tasks/${taskId}`, {
+    method: "DELETE"
+  });
+}
